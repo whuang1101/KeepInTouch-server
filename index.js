@@ -16,8 +16,11 @@ mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 const User = require("./models/user");
-const FriendRequest = require("./models/friendRequest")
-app.use(cookieSession({
+const FriendRequest = require("./models/friendRequest");
+const userRouter = require("./routes/userRouter")
+const FriendRouter = require("./routes/friendRequestRouter")
+
+app.use(express.json());app.use(cookieSession({
   name:"session",
   keys:["cat"],
   maxAge: 24*60*60*100
@@ -46,7 +49,10 @@ socketIO.on('connection', (socket) => {
     });
 });
 
+// using routers
+app.use("/users",userRouter)
 app.use("/auth", authRoute);
+app.use("/friend-request",FriendRouter)
 app.get('/api', (req, res) => {
   res.json({
     message: 'Hello world',
