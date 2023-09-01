@@ -18,23 +18,16 @@ module.exports.getAllPotentialFriends = asyncHandler(async(req,res,next) => {
         }
         return userId;
     },[])
-    console.log(allPotentialId)
-    // console.log(allUsers.length);
     const filteredUsers = [];
     for(let i =0; i< allUsers.length; i ++) {
         let a = 0
         for(let j = 0; j < allPotentialId.length; j ++){
-            if(allPotentialId[j].equals(allUsers[i]._id)){
-                console.log("same")
-            }
-            else{
+            if(!allPotentialId[j].equals(allUsers[i]._id)){
                 a += 1;
             }
         }
-        console.log(a)
         if( a === allPotentialId.length){
             filteredUsers.push(allUsers[i]);
-            // console.log(filteredUsers)
         }
     }
     res.status(200).json(filteredUsers)}
@@ -48,8 +41,6 @@ module.exports.getAllFriends = asyncHandler(async(req,res,next) => {
 
     const allFriends = await User.findOne({_id:req.params.id}).populate("friend_list").exec();
     const friend_list = allFriends.friend_list;
-    console.log(friend_list)
-
     if(friend_list){
         res.status(200).json(friend_list);
     }
