@@ -13,28 +13,30 @@ module.exports.getAllPotentialFriends = asyncHandler(async(req,res,next) => {
         if(!userId.includes(current.sender)){
             userId.push(current.sender)
         }
-        else if(!userId.includes(current.recipient)){
+        if(!userId.includes(current.recipient)){
             userId.push(current.recipient)
         }
         return userId;
     },[])
     console.log(allPotentialId)
+    // console.log(allUsers.length);
     const filteredUsers = [];
     for(let i =0; i< allUsers.length; i ++) {
         let a = 0
         for(let j = 0; j < allPotentialId.length; j ++){
-            if(!allPotentialId[j].equals(allUsers[i]._id)){
+            if(allPotentialId[j].equals(allUsers[i]._id)){
                 console.log("same")
             }
             else{
-                a++;
+                a += 1;
             }
         }
-        if( a !== allPotentialId.length){
+        console.log(a)
+        if( a === allPotentialId.length){
             filteredUsers.push(allUsers[i]);
+            // console.log(filteredUsers)
         }
     }
-    console.log(filteredUsers)
     res.status(200).json(filteredUsers)}
     else{
         res.status(200).json(allUsers)
