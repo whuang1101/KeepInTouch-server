@@ -5,9 +5,9 @@ const userSchema =  new Schema({
     username:{type: String},
     password: {type:String},
     name: {type:String,required: true},
-    friend_list: [{type: mongoose.Schema.Types.ObjectId}],
+    friend_list: [{type: mongoose.Schema.Types.ObjectId, Ref: "User"}],
     email: {type:String, required: true},
     image_url: {type:String},
 })
 
-module.exports = mongoose.model("users", userSchema)
+module.exports = mongoose.model("Users", userSchema)
