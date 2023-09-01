@@ -45,8 +45,6 @@ module.exports.getPendingRequests = asyncHandler(async(req,res,next) => {
 module.exports.acceptPost = asyncHandler(async(req,res,next) => {
     const sender = req.body.sender
     const recipient = req.body.recipient
-    console.log(sender._id);
-    console.log(recipient._id);
     const findRequest = await Friend.findOneAndUpdate(
         {sender: sender._id, recipient: recipient._id},{status:1})
 

@@ -43,3 +43,17 @@ module.exports.getAllPotentialFriends = asyncHandler(async(req,res,next) => {
     }
 }   
 )
+
+module.exports.getAllFriends = asyncHandler(async(req,res,next) => {
+
+    const allFriends = await User.findOne({_id:req.params.id}).populate("friend_list").exec();
+    const friend_list = allFriends.friend_list;
+    console.log(friend_list)
+
+    if(friend_list){
+        res.status(200).json(friend_list);
+    }
+    else {
+        res.send(404).json({message: "friend_list not found"})
+    }
+})
