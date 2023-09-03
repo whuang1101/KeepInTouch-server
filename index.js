@@ -12,6 +12,7 @@ const FriendRequest = require("./models/friendRequest");
 const Messenger = require("./models/message");
 const userRouter = require("./routes/userRouter");
 const FriendRouter = require("./routes/friendRequestRouter");
+const messageRouter = require("./routes/messageRouter")
 
 // Load environment variables
 require("dotenv").config();
@@ -55,7 +56,6 @@ function findSocketByUsername(username) {
 
   const user = connectedUsers[username];
   if (user) {
-    console.log("this user")
     return user;
   }
   else
@@ -68,17 +68,12 @@ socketIO.on('connection', (socket) => {
   connectedUsers[username] = socket;
 
   socket.on('chat message', (message) => {
-    console.log(`Received message: ${message}`);
     socketIO.emit('chat message', message);
   });
 
   socket.on('private message', ({ id, message }) => {
-    console.log(id);       
-    console.log(message); 
     const recipientSocket = findSocketByUsername(id);
-    console.log(recipientSocket)
     if (recipientSocket) {
-      console.log("message sent")
       recipientSocket.emit("private message", message);
     } else {
       socket.emit("error", "Recipient not found or offline");
@@ -94,6 +89,7 @@ socketIO.on('connection', (socket) => {
 app.use("/users", userRouter);
 app.use("/auth", authRoute);
 app.use("/friend-request", FriendRouter);
+app.use("/messages",messageRouter)
 
 // Start the server
 http.listen(PORT, () => {
