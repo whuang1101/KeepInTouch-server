@@ -20,6 +20,7 @@ router.get("/login/failed", (req,res) => {
 router.get("/login/success", async(req,res) => {
     if (req.user) {
         const findOne = await User.findOne({email: req.user.email});
+        console.log(findOne)
         res.status(200).json(
             {success:true,
             message:"successfully",

@@ -13,10 +13,13 @@ const Messenger = require("./models/message");
 const userRouter = require("./routes/userRouter");
 const FriendRouter = require("./routes/friendRequestRouter");
 const messageRouter = require("./routes/messageRouter")
+const localAuthRouter = require("./routes/localRouter")
 
 // Load environment variables
 require("dotenv").config();
-require("./googleAuth")
+require("./passport/googleAuth");
+require("./passport/localAuth")(passport);
+
 
 // MongoDB connection
 const mongoDb = process.env.SECRET_KEY;
@@ -38,7 +41,7 @@ app.use(passport.session());
 
 // CORS configuration
 app.use(cors({
-  origin: "http://localhost:5173", // Adjust this to your frontend's URL
+  origin: "http://localhost:5173", 
   methods: "GET, POST, PUT, DELETE",
   credentials: true,
 }));
@@ -46,7 +49,7 @@ app.use(cors({
 // Socket.io initialization (as you've correctly done)
 const socketIO = require('socket.io')(http, {
   cors: {
-    origin: "http://localhost:5173", // Adjust this to your frontend's URL
+    origin: "http://localhost:5173", 
   },
 });
 
@@ -63,10 +66,10 @@ function findSocketByUsername(username) {
 }
 
 // Socket.io connection handling
-socketIO.on('connection', (socket) => {
+socketIO.on('connection', async(socket) => {
   const username = socket.handshake.query.username;
   connectedUsers[username] = socket;
-
+  const onlineUser = await User.findByIdAndUpdate(username, { online: true });
   socket.on('chat message', (message) => {
     socketIO.emit('chat message', message);
   });
@@ -80,12 +83,18 @@ socketIO.on('connection', (socket) => {
     }
   })
 
-  socket.on('disconnect', () => {
-    delete connectedUsers[username];
+  socket.on('disconnect', async() => {
+    const onlineUser = await User.findOneAndUpdate(
+      { id: username }, 
+      { online: false, last_online: new Date() },
+      { new: true } 
+    );
+        delete connectedUsers[username];
   });
 });
 
 // Define routes
+app.use("/", localAuthRouter)
 app.use("/users", userRouter);
 app.use("/auth", authRoute);
 app.use("/friend-request", FriendRouter);
