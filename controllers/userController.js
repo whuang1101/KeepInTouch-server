@@ -48,3 +48,13 @@ module.exports.getAllFriends = asyncHandler(async(req,res,next) => {
         res.send(404).json({message: "friend_list not found"})
     }
 })
+module.exports.getOne = asyncHandler(async(req,res, next) => {
+    const id = req.params.id;
+    const findUser = await User.findById(id);
+    if(findUser){
+        res.status(200).json(findUser);
+    }
+    else{
+        res.statusMessage(404);
+    }
+})
