@@ -105,6 +105,3 @@ app.use("/messages",messageRouter)
 app.listen(port, "0.0.0.0", function () {
   console.log(`hosting on ${port}`)
 });
-
-
-
