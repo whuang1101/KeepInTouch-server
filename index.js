@@ -40,13 +40,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // CORS configuration
-const corsOptions = {
-  origin: "http://localhost:5173/",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+app.use(cors({
+  origin: "http://localhost:5173", 
+  methods: "GET, POST, PUT, DELETE",
   credentials: true,
-};
+}));
 
-app.use(cors(corsOptions));
 // Socket.io initialization (as you've correctly done)
 const socketIO = require('socket.io')(http, {
   cors: {
@@ -105,3 +104,4 @@ app.use("/messages",messageRouter)
 app.listen(port, "0.0.0.0", function () {
   console.log(`hosting on ${port}`)
 });
+
