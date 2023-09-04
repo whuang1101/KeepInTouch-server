@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const port = process.env.PORT || 3000;
 const http = require('http').Server(app);
 const cors = require('cors');
 const cookieSession = require("cookie-session");
@@ -101,10 +101,9 @@ app.use("/friend-request", FriendRouter);
 app.use("/messages",messageRouter)
 
 // Start the server
-http.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(port, "0.0.0.0", function () {
+  console.log(`hosting on ${port}`)
 });
-
 
 
 
