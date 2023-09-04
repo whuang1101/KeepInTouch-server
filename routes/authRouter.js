@@ -29,7 +29,7 @@ router.get("/login/success", async(req,res) => {
         )
     }
     else{
-        res.status(404).json({message:"failed to get"});
+        res.status(404).json({message:"failed to get message"});
     }
 })
 
