@@ -18,24 +18,19 @@ router.get("/login/failed", (req,res) => {
     })
 })
 router.get("/login/success", async(req,res) => {
-    try {
-        const findOne = await User.findOne({ email: req.user.email });
-        if (findOne) {
-          // User found, return user data
-          res.status(200).json({
-            success: true,
-            message: "successfully",
-            user: findOne,
-            cookies: req.cookies,
-          });
-        } else {
-          // User not found
-          res.status(404).json({ message: "User not found" });
+    if (req.user) {
+        const findOne = await User.findOne({email: req.user.email});
+        res.status(200).json(
+            {success:true,
+            message:"successfully",
+            user:findOne,
+            cookies: req.cookies
         }
-      } catch (error) {
-        console.error("User data retrieval error:", error);
-        res.status(500).json({ message: "Internal server error" });
-      }
+        )
+    }
+    else{
+        res.status(404).json({message:"failed to get message"});
+    }
 })
 
 module.exports = router;
