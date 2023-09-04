@@ -101,7 +101,8 @@ app.use("/friend-request", FriendRouter);
 app.use("/messages",messageRouter)
 
 // Start the server
-app.listen(port, "0.0.0.0", function () {
-  console.log(`hosting on ${port}`)
+http.listen(port, "0.0.0.0", () => {
+  console.log(`Server listening on ${port}`)
 });
+
 
