@@ -85,7 +85,7 @@ socketIO.on('connection', async(socket) => {
 
   socket.on('disconnect', async() => {
     const onlineUser = await User.findOneAndUpdate(
-      { id: username }, 
+      { _id: username }, 
       { online: false, last_online: new Date() },
       { new: true } 
     );

@@ -19,13 +19,11 @@ passport.use(new GoogleStrategy({
     })
     const findUser = await User.findOne({email: profile.email});
     if(!findUser){
-        console.log("Profile Created");
         await newUser.save()
         done(null,profile)
 
     }
     else {
-        console.log("User Already Exists")
         done(null,profile)
     }
   }
