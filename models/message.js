@@ -4,8 +4,9 @@ const {Schema} = mongoose;
 const messageSchema =  new Schema({
     sender: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "Users"},
     recipient: {type: mongoose.Schema.Types.ObjectId, required: true, ref: "Users"},
-    content: {type: text, required: true},
-    date: {type: Date, required: true, }
+    content: {type: String, required: true},
+    date: {type: Date, required: true, },
+    read: {type: Boolean}
 })
 
-modules.export = mongoose.model("Messages", messageSchema)
+module.exports = mongoose.model("Messages", messageSchema)

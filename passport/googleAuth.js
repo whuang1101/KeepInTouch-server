@@ -1,7 +1,7 @@
 const passport = require("passport")
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 require("dotenv").config();
-const User = require("./models/user")
+const User = require("../models/user")
 passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -19,13 +19,11 @@ passport.use(new GoogleStrategy({
     })
     const findUser = await User.findOne({email: profile.email});
     if(!findUser){
-        console.log("Profile Created");
         await newUser.save()
         done(null,profile)
 
     }
     else {
-        console.log("User Already Exists")
         done(null,profile)
     }
   }
