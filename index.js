@@ -41,7 +41,7 @@ app.use(passport.session());
 
 // CORS configuration
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:5173/",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
